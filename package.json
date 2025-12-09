@@ -1,0 +1,22 @@
+{
+  "name": "femcoders-proyecto-3-curious-facts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "js/script.js",
+  "scripts": {
+    "test": "vitest",
+    "dev": "open index.html"
+  },
+  "keywords": [
+    "SPA",
+    "Javascript",
+    "FetchAPI",
+    "Vitest"
+  ],
+  "author": "annahico",
+  "license": "ISC",
+  "packageManager": "pnpm@10.25.0",
+  "devDependencies": {
+    "vitest": "^4.0.15"
+  }
+}
