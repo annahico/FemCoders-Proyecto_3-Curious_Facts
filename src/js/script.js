@@ -1,3 +1,33 @@
+// Esta función va a la base de datos de datos curiosos (la API) y pide uno nuevo.
+// Espera la respuesta y verifica que la información llegue correctamente. 
+// Si hay un problema de conexión o la base de datos falla, la función avisa con un error.
 
+const fetchRandomFact = async (endpoint = 'api/v2/facts/random') => {
+    // Aquí se construye la dirección web específica que visitaremos para pedir el dato.
+    const API_URL = `https://uselessfacts.jsph.pl/api/v2/facts/${endpoint}?language=en`;
+    try {
+        const response = await fetch(API_URL); // 'await fetch' significa: 'Ve a la dirección web y espera la respuesta'
+        if (!response.ok) { // Si la respuesta no es "todo bien" (ej: código 404 o 500), lanza un error.
+            throw new Error(`API response error: ${response.status}`);
+        }
+        return await response.json(); // Convierte la respuesta en un formato que la aplicación puede usar (JSON).
+    } catch (error) {
+        throw error; // Si hay un error de conexión, se detiene y avisa.
+    }
+};
 
+// Esta función toma los datos brutos que vinieron de Internet y los limpia. 
+// Se asegura de que el dato contenga el texto y la identificación (ID) necesaria para guardarlo como favorito, y lo devuelve ordenado para que la aplicación lo muestre.
 
+function extractRandomText(fact) { // Verifica si los datos llegaron incompletos o falta el texto principal.
+    if (!fact || !fact.text) {
+        throw new Error('The provided fact structure is not valid for fact extraction.');
+    }
+    return { // Devuelve un objeto simple con solo el ID y el texto, listo para usarse en la app.
+        id: fact.id,
+        text: fact.text
+    };
+};
+
+// Hacemos que estas dos funciones estén disponibles para el el DOM y los tests.
+export { fetchRandomFact, extractRandomText };
