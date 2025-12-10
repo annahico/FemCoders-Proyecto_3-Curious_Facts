@@ -31,3 +31,37 @@ function extractRandomText(fact) { // Verifica si los datos llegaron incompletos
 
 // Hacemos que estas dos funciones estén disponibles para el el DOM y los tests.
 export { fetchRandomFact, extractRandomText };
+
+//  ELEMENTOS DEL DOM (T1.2) 
+const factTextElement = document.getElementById('fact-text');
+const newFactButton = document.getElementById('new-fact-button');
+const saveFactButton = document.getElementById('save-fact-button');
+const factCard = document.getElementById('fact-card');
+
+// Muestra un mensaje de estado, deshabilitando o habilitando botones según sea necesario.
+function displayStatus(message, isError = false) {
+    factTextElement.textContent = message;
+    newFactButton.disabled = true;
+    saveFactButton.disables = true;
+
+    // Si hay error, marcamos la tarjeta visualmente
+    if (isError) {
+        factCard.classList.add('error');
+    } else {
+        factCard.classList.remove('error');
+    }
+};
+
+// Muestra el hecho ya procesado en la tarjeta principal.
+function displayFact(factData) {
+    factTextElement.textContent = factData.text;
+
+    // Almacenamos el ID y el texto en el botón de guardar
+    saveFactButton.dataset.factId = factData.id;
+    saveFactButton.dataset.factTect = factData.text;
+
+    // Habilita el botón de guardar, ya que hay un hecho válido
+    saveFactButton.disabled = false;
+    factCard.classList.remove('error');
+};
+
