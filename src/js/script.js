@@ -65,3 +65,35 @@ function displayFact(factData) {
     factCard.classList.remove('error');
 };
 
+// COORDINADOR PRINCIPAL (T1.3)
+
+// Manejador asíncrono que coordina la llamada a la API y la actualización del DOM.
+async function loadNewFact() {
+    displayStatus("Loading a new curious fact...", false); // Muestra "Loading..." y deshabilita botones
+    
+    try {
+        // T1.1: Lógica de red y extracción
+        const rawData = await fetchRandomFact();
+        const factData = extractRandomText(rawData); 
+        
+        // T1.2: Mostrar en la interfaz
+        displayFact(factData); 
+
+    } catch (error) {
+        // Manejo del error en la interfaz
+        console.error("Error loading the fact:", error);
+        displayStatus("Oops! Failed to load the fact. Check your connection or the API URL.", true);
+        
+    } finally {
+        // T1.3: Vuelve a habilitar el botón de "Nuevo Hecho" al finalizar
+        newFactButton.disabled = false;
+    }
+};
+
+// EVENT HANDLER (T1.3)
+
+// 1. Conecta el botón 'Nuevo Hecho' al manejador 
+newFactButton.addEventListener('click', loadNewFact);
+
+// 2. Llama a la función al cargar la página 
+document.addEventListener('DOMContentLoaded', loadNewFact);
