@@ -5,11 +5,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./src/css/style.css">
-  <title>Curious Facts</title>
+  <title>Curious Fact Generator</title>
 </head>
 
 <body>
+  <main class="container">
+    <section class="fact-display">
+      <h2>Curious Fact Generator</h2>
 
+      <div id="fact-card" class="card">
+        <p id="fact-text"> Press "New Fact" to discover your curious fact!</p>
+      </div>
+
+      <div class="fact-actions">
+        <button id="new-fact-buton" class="button primary"> New Fact</button>
+        <buttton id="save-fact-button" class="button secondary" disabled> Save favoutire Fact</buttton>
+      </div>
+
+    </section>
+
+    <section id="favourites-section">
+      <h3> My Favourites Facts</h3>
+      <ul id="favorites-list"></ul>
+    </section>
+
+  </main>
 
   <script type="module" src="./src/js/script.js"></script>
 </body>
