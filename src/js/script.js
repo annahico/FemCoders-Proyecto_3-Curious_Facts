@@ -58,17 +58,6 @@ function initApp() {
         }
     }
 
-    function displayFact(factData) {
-        factTextElement.textContent = factData.text;
-
-        // Almacena el ID y el texto en el botón para usarlo al guardar (T2.1)
-        saveFactButton.dataset.factId = factData.id;
-        saveFactButton.dataset.factText = factData.text;
-
-        saveFactButton.disabled = false;
-        factCard.classList.remove('error');
-    }
-
     // COORDINADOR PRINCIPAL (T1.3) 
     async function loadNewFact() {
         displayStatus("Cargando un nuevo hecho curioso...", false);
@@ -91,31 +80,8 @@ function initApp() {
 }
 
 
-// Almacena un hecho curioso en el localStorage.
-// Si la lista de favoritos no existe, la inicializa.
-function saveToFavorites(fact) {
-    // 1. Obtener la lista actual de favoritos o inicializarla como un array vacío
-    const favoritesJSON = localStorage.getItem('curiousFactsFavorites');
-    let favorites = favoritesJSON ? JSON.parse(favoritesJSON) : [];
-
-    // 2. Verificar si el hecho (por ID) ya existe
-    const exists = favorites.some(fav => fav.id === fact.id); 
-
-    if (!exists) {
-        // 3. Añadir el nuevo hecho al inicio del array (unshift)
-        favorites.unshift(fact); 
-        
-        // 4. Guardar el array actualizado en localStorage
-        localStorage.setItem('curiousFactsFavorites', JSON.stringify(favorites));
-        return true;
-    }
-    
-    return false; // El hecho ya estaba en favoritos
-}
-
-
 // Exportamos solo la lógica pura que necesitamos testear (para T1.4)
-export { fetchRandomFact, extractRandomText, saveToFavorites };
+export { fetchRandomFact, extractRandomText };
 
 //  LLAMADA FINAL: SOLO SE EJECUTA EN EL NAVEGADOR 
 // Condición: Solo añade el listener si 'document' existe (es decir, en el navegador).
