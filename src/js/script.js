@@ -173,6 +173,23 @@ function initApp() {
             newFactButton.disabled = false;
         }
     }
+    
+    // T2.3: Manejar el evento de guardar
+    function handleSaveFact() {
+        const factId = saveFactButton.dataset.factId;
+        const factText = saveFactButton.dataset.factText;
+        
+        if (factId && factText) {
+            const success = saveToFavorites({ id: factId, text: factText });
+            
+            if (success) {
+                // Opcional: Mostrar retroalimentación al usuario
+                console.log(`Fact ${factId} guardado!`);
+            } else {
+                console.log(`Fact ${factId} ya existe en favoritos.`);
+            }
+        }
+    }
 
 
     //  INICIALIZACIÓN DE EVENTOS (T1.3 & T2.3)
