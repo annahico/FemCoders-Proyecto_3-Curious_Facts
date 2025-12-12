@@ -1,8 +1,7 @@
-// === CONSTANTE API ===
+// CONSTANTE API 
 const API_BASE_URL = 'https://uselessfacts.jsph.pl/';
 
 // [Lógica Pura: T1.1, T2.1, T2.2, T2.4 - Exportable para Testing]
-
 
 // T1.1
 const fetchRandomFact = async (endpoint = 'api/v2/facts/random?language=es') => {
@@ -40,7 +39,7 @@ function saveToFavorites(fact) {
     const exists = favorites.some(fav => fav.id === fact.id);
 
     if (!exists) {
-        favorites.unshift(fact);
+        favorites.unshift(fact); 
         localStorage.setItem('curiousFactsFavorites', JSON.stringify(favorites));
         return true;
     }
@@ -49,11 +48,11 @@ function saveToFavorites(fact) {
 
 function deleteFavorite(factId) {
     let favorites = loadFavorites();
-
+    
     // Filtra el array, manteniendo solo los hechos cuyo ID no coincida.
     const initialLength = favorites.length;
     favorites = favorites.filter(fact => fact.id !== factId);
-
+    
     // Si el tamaño cambió, significa que se eliminó uno.
     if (favorites.length < initialLength) {
         localStorage.setItem('curiousFactsFavorites', JSON.stringify(favorites));
@@ -62,21 +61,18 @@ function deleteFavorite(factId) {
     return false;
 }
 
-
-
-// Lógica de inicialización (SÓLO DOM) 
-
+// === Lógica de inicialización (SÓLO DOM) ===
 
 function initApp() {
 
-    // ELEMENTOS DEL DOM (T1.2) 
+    // === ELEMENTOS DEL DOM (T1.2) 
     const factTextElement = document.getElementById('fact-text');
     const newFactButton = document.getElementById('new-fact-button');
     const saveFactButton = document.getElementById('save-fact-button');
     const factCard = document.getElementById('fact-card');
     const favoritesListElement = document.getElementById('favorites-list'); // T2.2
 
-    // Lógica DOM Interna (Usa las referencias DOM) 
+    // --- Lógica DOM Interna (Usa las referencias DOM) ---
 
     function displayStatus(message, isError = false) {
         factTextElement.textContent = message;
@@ -103,8 +99,8 @@ function initApp() {
 
     function renderFavoritesList() {
         const favorites = loadFavorites();
-        favoritesListElement.innerHTML = '';
-
+        favoritesListElement.innerHTML = ''; 
+        
         if (favorites.length === 0) {
             favoritesListElement.innerHTML = '<li class="text-secondary">No tienes hechos favoritos guardados.</li>';
             return;
@@ -113,47 +109,47 @@ function initApp() {
         favorites.forEach(fact => {
             const listItem = document.createElement('li');
             listItem.classList.add('favorite-item');
-
+            
             const factSpan = document.createElement('span');
             factSpan.textContent = fact.text;
 
             const deleteButton = document.createElement('button');
             deleteButton.textContent = 'X';
             deleteButton.classList.add('delete-favorite-btn');
-            deleteButton.dataset.factId = fact.id;
-
+            deleteButton.dataset.factId = fact.id; 
+            
             // T2.4: Manejador de eliminación
             deleteButton.addEventListener('click', handleDeleteFact);
-
+            
             listItem.appendChild(factSpan);
             listItem.appendChild(deleteButton);
             favoritesListElement.appendChild(listItem);
         });
     }
-
+    
     // T2.3: Manejar el evento de guardar
     function handleSaveFact() {
         const factId = saveFactButton.dataset.factId;
         const factText = saveFactButton.dataset.factText;
-
+        
         if (factId && factText) {
             const success = saveToFavorites({ id: factId, text: factText });
-
+            
             if (success) {
-                renderFavoritesList(); // Refresca la lista
+                renderFavoritesList(); //  Refresca la lista
             }
         }
     }
-
+    
     // T2.4: Manejar el evento de eliminación
     function handleDeleteFact(event) {
         const factIdToDelete = event.target.dataset.factId;
-
+        
         if (factIdToDelete) {
             const success = deleteFavorite(factIdToDelete);
-
+            
             if (success) {
-                renderFavoritesList(); //  Refresca la lista
+                renderFavoritesList(); // Refresca la lista
             }
         }
     }
@@ -177,12 +173,11 @@ function initApp() {
 
     //  INICIALIZACIÓN DE EVENTOS (T1.3 & T2.3)
     newFactButton.addEventListener('click', loadNewFact);
-    saveFactButton.addEventListener('click', handleSaveFact);
+    saveFactButton.addEventListener('click', handleSaveFact); 
 
-    loadNewFact();
-    renderFavoritesList(); // T2.2: Llamada inicial para mostrar favoritos
+    loadNewFact(); 
+    renderFavoritesList(); //  T2.2: Llamada inicial para mostrar favoritos
 }
-
 
 // Exportamos toda la lógica pura que necesitamos testear
 export { fetchRandomFact, extractRandomText, saveToFavorites, loadFavorites, deleteFavorite };
