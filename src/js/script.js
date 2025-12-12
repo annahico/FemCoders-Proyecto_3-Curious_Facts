@@ -61,18 +61,18 @@ function deleteFavorite(factId) {
     return false;
 }
 
-// === Lógica de inicialización (SÓLO DOM) ===
+//  Lógica de inicialización (SÓLO DOM) 
 
 function initApp() {
 
-    // === ELEMENTOS DEL DOM (T1.2) 
+    // ELEMENTOS DEL DOM (T1.2) 
     const factTextElement = document.getElementById('fact-text');
     const newFactButton = document.getElementById('new-fact-button');
     const saveFactButton = document.getElementById('save-fact-button');
     const factCard = document.getElementById('fact-card');
     const favoritesListElement = document.getElementById('favorites-list'); // T2.2
 
-    // --- Lógica DOM Interna (Usa las referencias DOM) ---
+    //  Lógica DOM Interna (Usa las referencias DOM) 
 
     function displayStatus(message, isError = false) {
         factTextElement.textContent = message;
