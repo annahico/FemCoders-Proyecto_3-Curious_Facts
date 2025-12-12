@@ -1,99 +1,124 @@
-// Esta función va a la base de datos de datos curiosos (la API) y pide uno nuevo.
-// Espera la respuesta y verifica que la información llegue correctamente. 
-// Si hay un problema de conexión o la base de datos falla, la función avisa con un error.
+// src/js/script.js
 
-const fetchRandomFact = async (endpoint = 'api/v2/facts/random') => {
-    // Aquí se construye la dirección web específica que visitaremos para pedir el dato.
-    const API_URL = `https://uselessfacts.jsph.pl/api/v2/facts/${endpoint}?language=en`;
+// === CONSTANTE API ===
+const API_BASE_URL = 'https://uselessfacts.jsph.pl/';
+
+// [T1.1: Lógica Pura - Exportable para Testing]
+
+const fetchRandomFact = async (endpoint = 'api/v2/facts/random?language=es') => {
     try {
-        const response = await fetch(API_URL); // 'await fetch' significa: 'Ve a la dirección web y espera la respuesta'
-        if (!response.ok) { // Si la respuesta no es "todo bien" (ej: código 404 o 500), lanza un error.
+        const response = await fetch(`${API_BASE_URL}${endpoint}`);
+
+        if (!response.ok) {
+            // Lanza un error si la respuesta HTTP no es exitosa (ej: 404, 500)
             throw new Error(`API response error: ${response.status}`);
         }
-        return await response.json(); // Convierte la respuesta en un formato que la aplicación puede usar (JSON).
+
+        return response.json();
     } catch (error) {
-        throw error; // Si hay un error de conexión, se detiene y avisa.
+        // Relanza el error de red o de respuesta para que sea manejado por el coordinador
+        throw new Error(error.message);
     }
 };
 
-// Esta función toma los datos brutos que vinieron de Internet y los limpia. 
-// Se asegura de que el dato contenga el texto y la identificación (ID) necesaria para guardarlo como favorito, y lo devuelve ordenado para que la aplicación lo muestre.
-
-function extractRandomText(fact) { // Verifica si los datos llegaron incompletos o falta el texto principal.
+function extractRandomText(fact) {
     if (!fact || !fact.text) {
         throw new Error('The provided fact structure is not valid for fact extraction.');
     }
-    return { // Devuelve un objeto simple con solo el ID y el texto, listo para usarse en la app.
+
+    // Retorna solo las propiedades que necesitamos para el DOM y el almacenamiento
+    return {
         id: fact.id,
-        text: fact.text
+        text: fact.text.trim()
     };
 };
+//  Lógica de inicialización (SÓLO DOM) 
 
-// Hacemos que estas dos funciones estén disponibles para el el DOM y los tests.
-export { fetchRandomFact, extractRandomText };
+ // Inicializa la aplicación, obteniendo referencias al DOM y configurando eventos.
+ // Esta función es llamada solo por el navegador, no por Vitest.
 
-//  ELEMENTOS DEL DOM (T1.2) 
-const factTextElement = document.getElementById('fact-text');
-const newFactButton = document.getElementById('new-fact-button');
-const saveFactButton = document.getElementById('save-fact-button');
-const factCard = document.getElementById('fact-card');
+function initApp() {
 
-// Muestra un mensaje de estado, deshabilitando o habilitando botones según sea necesario.
-function displayStatus(message, isError = false) {
-    factTextElement.textContent = message;
-    newFactButton.disabled = true;
-    saveFactButton.disables = true;
+    //  ELEMENTOS DEL DOM (T1.2) 
+    const factTextElement = document.getElementById('fact-text');
+    const newFactButton = document.getElementById('new-fact-button');
+    const saveFactButton = document.getElementById('save-fact-button');
+    const factCard = document.getElementById('fact-card');
 
-    // Si hay error, marcamos la tarjeta visualmente
-    if (isError) {
-        factCard.classList.add('error');
-    } else {
+    //  FUNCIONES DE ESTADO Y DISPLAY 
+    function displayStatus(message, isError = false) {
+        factTextElement.textContent = message;
+        newFactButton.disabled = true;
+        saveFactButton.disabled = true;
+
+        if (isError) {
+            factCard.classList.add('error');
+        } else {
+            factCard.classList.remove('error');
+        }
+    }
+
+    function displayFact(factData) {
+        factTextElement.textContent = factData.text;
+
+        // Almacena el ID y el texto en el botón para usarlo al guardar (T2.1)
+        saveFactButton.dataset.factId = factData.id;
+        saveFactButton.dataset.factText = factData.text;
+
+        saveFactButton.disabled = false;
         factCard.classList.remove('error');
     }
-};
 
-// Muestra el hecho ya procesado en la tarjeta principal.
-function displayFact(factData) {
-    factTextElement.textContent = factData.text;
+    // COORDINADOR PRINCIPAL (T1.3) 
+    async function loadNewFact() {
+        displayStatus("Cargando un nuevo hecho curioso...", false);
 
-    // Almacenamos el ID y el texto en el botón de guardar
-    saveFactButton.dataset.factId = factData.id;
-    saveFactButton.dataset.factTect = factData.text;
-
-    // Habilita el botón de guardar, ya que hay un hecho válido
-    saveFactButton.disabled = false;
-    factCard.classList.remove('error');
-};
-
-// COORDINADOR PRINCIPAL (T1.3)
-
-// Manejador asíncrono que coordina la llamada a la API y la actualización del DOM.
-async function loadNewFact() {
-    displayStatus("Loading a new curious fact...", false); // Muestra "Loading..." y deshabilita botones
-    
-    try {
-        // T1.1: Lógica de red y extracción
-        const rawData = await fetchRandomFact();
-        const factData = extractRandomText(rawData); 
-        
-        // T1.2: Mostrar en la interfaz
-        displayFact(factData); 
-
-    } catch (error) {
-        // Manejo del error en la interfaz
-        console.error("Error loading the fact:", error);
-        displayStatus("Oops! Failed to load the fact. Check your connection or the API URL.", true);
-        
-    } finally {
-        // T1.3: Vuelve a habilitar el botón de "Nuevo Hecho" al finalizar
-        newFactButton.disabled = false;
+        try {
+            const rawData = await fetchRandomFact();
+            const factData = extractRandomText(rawData);
+            displayFact(factData);
+        } catch (error) {
+            console.error("Error al cargar el hecho:", error);
+            displayStatus("¡Ups! Falló la carga del hecho. Revisa tu conexión o la URL de la API.", true);
+        } finally {
+            newFactButton.disabled = false;
+        }
     }
-};
 
-// EVENT HANDLER (T1.3)
+    //  INICIALIZACIÓN DE EVENTOS (T1.3) 
+    newFactButton.addEventListener('click', loadNewFact);
+    loadNewFact(); // Llamada inicial al cargar la página (Requisito funcional)
+}
 
-// 1. Conecta el botón 'Nuevo Hecho' al manejador 
-newFactButton.addEventListener('click', loadNewFact);
 
-// 2. Llama a la función al cargar la página 
-document.addEventListener('DOMContentLoaded', loadNewFact);
+// Almacena un hecho curioso en el localStorage.
+// Si la lista de favoritos no existe, la inicializa.
+function saveToFavorites(fact) {
+    // 1. Obtener la lista actual de favoritos o inicializarla como un array vacío
+    const favoritesJSON = localStorage.getItem('curiousFactsFavorites');
+    let favorites = favoritesJSON ? JSON.parse(favoritesJSON) : [];
+
+    // 2. Verificar si el hecho (por ID) ya existe
+    const exists = favorites.some(fav => fav.id === fact.id); 
+
+    if (!exists) {
+        // 3. Añadir el nuevo hecho al inicio del array (unshift)
+        favorites.unshift(fact); 
+        
+        // 4. Guardar el array actualizado en localStorage
+        localStorage.setItem('curiousFactsFavorites', JSON.stringify(favorites));
+        return true;
+    }
+    
+    return false; // El hecho ya estaba en favoritos
+}
+
+
+// Exportamos solo la lógica pura que necesitamos testear (para T1.4)
+export { fetchRandomFact, extractRandomText, saveToFavorites };
+
+//  LLAMADA FINAL: SOLO SE EJECUTA EN EL NAVEGADOR 
+// Condición: Solo añade el listener si 'document' existe (es decir, en el navegador).
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', initApp);
+}
