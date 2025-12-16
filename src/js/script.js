@@ -192,6 +192,9 @@ function initApp() {
     newFactButton.addEventListener('click', loadNewFact);
     saveFactButton.addEventListener('click', handleSaveFact); 
 
+    // === T3.1: LLAMADA A LA FUNCIÓN DE ACTUALIZACIÓN DEL AÑO ===
+    updateCopyrightYear();
+
     loadNewFact(); 
     renderFavoritesList(); //  T2.2: Llamada inicial para mostrar favoritos
 }

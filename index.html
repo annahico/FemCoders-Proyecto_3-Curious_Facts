@@ -5,31 +5,42 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./src/css/style.css">
-  <title>Curious Fact Generator</title>
+  <title> Curious Facts | Random Facts App</title>
 </head>
 
 <body>
+
+  <header class="header">
+    <h1> Curious Fact App</h1>
+    <p> Discover and save random interesting facts.</p>
+  </header>
+
   <main class="container">
-    <section class="fact-display">
-      <h2>Curious Fact Generator</h2>
+    <section class="fact-container">
+      <h2> Fact of the day</h2>
 
-      <div id="fact-card" class="card">
-        <p id="fact-text"> Press "New Fact" to discover your curious fact!</p>
+      <article id="fact-card" class="card">
+        <p id="fact-text"> Loading a new curious fact...</p>
+      </article>
+
+      <div class="controls">
+        <button id="new-fact-buton" class="btn btn-primary"> New Fact</button>
+        <buttton id="save-fact-button" class="btn btn-secondary" disabled> Save to Favourites</buttton>
       </div>
-
-      <div class="fact-actions">
-        <button id="new-fact-buton" class="button primary"> New Fact</button>
-        <buttton id="save-fact-button" class="button secondary" disabled> Save favoutire Fact</buttton>
-      </div>
-
     </section>
 
-    <section id="favourites-section">
-      <h3> My Favourites Facts</h3>
-      <ul id="favorites-list"></ul>
+    <section id="favourites-container">
+      <h2> My Favourites Facts</h2>
+
+      <div class=" favorites-list-wrapper">
+        <ul id="favorites-list" class="list-favorites"></ul>
     </section>
 
   </main>
+
+  <footer class=" footer">
+    <p> &copy; <span id="current-year">2025</span> Curious Facts App annahico</p>
+  </footer>
 
   <script type="module" src="./src/js/script.js"></script>
 </body>
