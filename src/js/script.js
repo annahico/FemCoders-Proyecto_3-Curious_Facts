@@ -197,6 +197,17 @@ function initApp() {
 
     loadNewFact(); 
     renderFavoritesList(); //  T2.2: Llamada inicial para mostrar favoritos
+
+     // T3.1: Busca el elemento con ID 'current-year' y lo actualiza con el año actual.
+    
+    function updateCopyrightYear() {
+        const yearElement = document.getElementById('current-year');
+        // Usamos la clase Date para obtener el año actual del sistema
+        const currentYear = new Date().getFullYear(); 
+        
+        if (yearElement) {
+            yearElement.textContent = currentYear;
+        }
 }
 
 // Exportamos toda la lógica pura que necesitamos testear
