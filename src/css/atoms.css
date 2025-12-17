@@ -14,7 +14,6 @@
     margin-left: 0;
 }
 
-/* Botón Primario (Rosa) */
 .button.primary {
     background-color: var(--color-primary);
     color: var(--color-card-bg);
@@ -25,7 +24,6 @@
     box-shadow: var(--shadow-md);
 }
 
-/* Botón Secundario (Morado/Fucsia) */
 .button.secondary {
     background-color: var(--color-secondary);
     color: var(--color-card-bg);
@@ -36,7 +34,6 @@
     box-shadow: var(--shadow-md);
 }
 
-/* Estado Deshabilitado */
 .button:disabled {
     opacity: 0.5;
     cursor: not-allowed;

@@ -1,9 +1,5 @@
-// CONSTANTE API 
 const API_BASE_URL = 'https://uselessfacts.jsph.pl/';
 
-// [Lógica Pura: T1.1, T2.1, T2.2, T2.4 - Exportable para Testing]
-
-// T1.1
 const fetchRandomFact = async (endpoint = 'api/v2/facts/random?language=es') => {
     try {
         const response = await fetch(`${API_BASE_URL}${endpoint}`);
@@ -16,7 +12,6 @@ const fetchRandomFact = async (endpoint = 'api/v2/facts/random?language=es') => 
     }
 };
 
-// T1.1
 function extractRandomText(fact) {
     if (!fact || !fact.text) {
         throw new Error('The provided fact structure is not valid for fact extraction.');
@@ -27,13 +22,11 @@ function extractRandomText(fact) {
     };
 };
 
-// T2.2 - Lógica Pura: Cargar Favoritos
 function loadFavorites() {
     const favoritesJSON = localStorage.getItem('curiousFactsFavorites');
     return favoritesJSON ? JSON.parse(favoritesJSON) : [];
 }
 
-// T2.1 - Lógica Pura: Guardar Favoritos
 function saveToFavorites(fact) {
     let favorites = loadFavorites();
     const exists = favorites.some(fav => fav.id === fact.id);
@@ -49,36 +42,25 @@ function saveToFavorites(fact) {
 function deleteFavorite(factId) {
     let favorites = loadFavorites();
 
-    // Filtra el array, manteniendo solo los hechos cuyo ID no coincida.
     const initialLength = favorites.length;
     favorites = favorites.filter(fact => fact.id !== factId);
 
-    // Si el tamaño cambió, significa que se eliminó uno.
     if (favorites.length < initialLength) {
         localStorage.setItem('curiousFactsFavorites', JSON.stringify(favorites));
         return true;
     }
     return false;
 }
-
-//  Lógica de inicialización (SÓLO DOM) 
-
 function initApp() {
-
-    // ELEMENTOS DEL DOM (T1.2) 
     const factTextElement = document.getElementById('fact-text');
     const newFactButton = document.getElementById('new-fact-button');
     const saveFactButton = document.getElementById('save-fact-button');
     const factCard = document.getElementById('fact-card');
     const favoritesListElement = document.getElementById('favorites-list'); // T2.2
 
-    //  Lógica DOM Interna (Usa las referencias DOM) 
-
-    // T3.1: FUNCIÓN PARA ACTUALIZAR EL AÑO DEL COPYRIGHT
-    // La definimos aquí al inicio de las funciones internas para que esté disponible para la llamada.
     function updateCopyrightYear() {
         const yearElement = document.getElementById('current-year');
-        const currentYear = new Date().getFullYear();  // Usamos la clase Date para obtener el año actual del sistema
+        const currentYear = new Date().getFullYear();
 
         if (yearElement) {
             yearElement.textContent = currentYear;
@@ -97,7 +79,6 @@ function initApp() {
         }
     }
 
-    // T1.3/T2.3: COMPLETA displayFact
     function displayFact(factData) {
         factTextElement.textContent = factData.text;
         saveFactButton.dataset.factId = factData.id;
@@ -135,7 +116,6 @@ function initApp() {
         });
     }
 
-    // T2.3: Manejar el evento de guardar
     function handleSaveFact() {
         const factId = saveFactButton.dataset.factId;
         const factText = saveFactButton.dataset.factText;
@@ -144,8 +124,7 @@ function initApp() {
             const success = saveToFavorites({ id: factId, text: factText });
 
             if (success) {
-                renderFavoritesList(); //  Refresca la lista
-                // Opcional: Mostrar retroalimentación al usuario
+                renderFavoritesList();
                 console.log(`Fact ${factId} guardado!`);
             } else {
                 console.log(`Fact ${factId} ya existe en favoritos.`);
@@ -153,7 +132,6 @@ function initApp() {
         }
     }
 
-    // T2.4: Manejar el evento de eliminación
     function handleDeleteFact(event) {
         const factIdToDelete = event.target.dataset.factId;
 
@@ -161,12 +139,11 @@ function initApp() {
             const success = deleteFavorite(factIdToDelete);
 
             if (success) {
-                renderFavoritesList(); // Refresca la lista
+                renderFavoritesList();
             }
         }
     }
 
-    // COORDINADOR PRINCIPAL (T1.3) 
     async function loadNewFact() {
         displayStatus("Cargando un nuevo hecho curioso...", false);
 
@@ -182,20 +159,16 @@ function initApp() {
         }
     }
 
-    //  INICIALIZACIÓN DE EVENTOS (T1.3 & T2.3)
     newFactButton.addEventListener('click', loadNewFact);
     saveFactButton.addEventListener('click', handleSaveFact);
 
-    // T3.1: LLAMADA A LA FUNCIÓN DE ACTUALIZACIÓN DEL AÑO
     updateCopyrightYear();
     loadNewFact();
-    renderFavoritesList(); //  T2.2: Llamada inicial para mostrar favoritos
+    renderFavoritesList();
 }
 
-// Exportamos toda la lógica pura que necesitamos testear
 export { fetchRandomFact, extractRandomText, saveToFavorites, loadFavorites, deleteFavorite };
 
-//  LLAMADA FINAL: SOLO SE EJECUTA EN EL NAVEGADOR 
 if (typeof document !== 'undefined') {
     document.addEventListener('DOMContentLoaded', initApp);
 }

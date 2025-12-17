@@ -1,20 +1,12 @@
-// test/script.test.js
-
 import { describe, it, expect, vi, afterEach } from 'vitest';
-// Importamos las funciones que vamos a testear desde la carpeta js/
 import { fetchRandomFact, extractRandomText } from '../js/script.js';
 
-// PREPARACIÓN DEL ENTORNO (MOCKING)
-// Reemplazamos la función global 'fetch' para controlar las respuestas de la API.
 global.fetch = vi.fn();
 
-// Aseguramos que el mock de fetch se limpie después de cada prueba
 afterEach(() => {
     vi.clearAllMocks();
 });
 
-
-// TEST SUITE 1: fetchRandomFact (Pruebas de Red y Errores de API)
 describe('fetchRandomFact', () => {
 
     it('debe devolver el objeto JSON completo en caso de éxito (response.ok = true)', async () => {
@@ -48,7 +40,6 @@ describe('fetchRandomFact', () => {
 
 });
 
-// TEST SUITE 2: extractRandomText (Pruebas de Procesamiento de Datos)
 
 describe('extractRandomText', () => {
 
