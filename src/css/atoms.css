@@ -1,0 +1,44 @@
+.button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    margin: 0 var(--spacing-xs);
+    text-transform: uppercase;
+}
+
+.button:first-child {
+    margin-left: 0;
+}
+
+/* Botón Primario (Rosa) */
+.button.primary {
+    background-color: var(--color-primary);
+    color: var(--color-card-bg);
+}
+
+.button.primary:hover:not(:disabled) {
+    background-color: #d15192;
+    box-shadow: var(--shadow-md);
+}
+
+/* Botón Secundario (Morado/Fucsia) */
+.button.secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-card-bg);
+}
+
+.button.secondary:hover:not(:disabled) {
+    background-color: #8018c0;
+    box-shadow: var(--shadow-md);
+}
+
+/* Estado Deshabilitado */
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
