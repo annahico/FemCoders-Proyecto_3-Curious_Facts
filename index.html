@@ -1,12 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./css/style.css">
-  <title>Document</title>
+  <link rel="stylesheet" href="./src/css/style.css">
+  <title> Curious Facts | Random Facts App</title>
 </head>
+
 <body>
-  <script src="./js/script.js"></script>
+
+  <header class="header">
+    <h1> Curious Fact App</h1>
+    <p> Discover and save random interesting facts.</p>
+  </header>
+
+  <main class="container">
+    <section class="fact-container">
+      <h2> Fact of the day</h2>
+
+      <article id="fact-card" class="card">
+        <p id="fact-text"> Loading a new curious fact...</p>
+      </article>
+
+      <div class="fact-actions">
+        <button id="new-fact-button" class="button primary"> New Fact</button>
+        <button id="save-fact-button" class="button secondary" disabled> Save favourite Fact</button>
+      </div>
+    </section>
+
+    <section id="favourites-container">
+      <h2> My Favourites Facts</h2>
+
+      <div class=" favorites-list-wrapper">
+        <ul id="favorites-list" class="list-favorites"></ul>
+    </section>
+
+  </main>
+
+  <footer class=" footer">
+    <p> &copy; <span id="current-year">2025</span> Curious Facts App by
+      <a href="https://github.com/annahico" target="_blank" rel="noopener noreferrer">annahico</a> <!-- de este modo evitamos que se abra el link en la misma ventana -->
+    </p> <!-- con el current-year hacemos que el año se cambie automáticamente -->
+  </footer>
+
+  <script type="module" src="./src/js/script.js"></script>
 </body>
+
 </html>

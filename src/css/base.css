@@ -1,0 +1,67 @@
+:root {
+    /* 1. Colores */
+    --color-primary: #FF69B4;       
+    --color-secondary: #A020F0;     
+    --color-background: #F8F8FF;    
+    --color-card-bg: #FFFFFF;       
+    --color-text: #333333;          
+    --color-text-light: #555555;    
+    --color-error: #B22222;         
+
+    /* 2. Espaciado y Estructura */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 48px;
+    --border-radius: 8px;
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset y Tipografía */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Arial, Helvetica, sans-serifUI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    min-height: 100vh;
+    display: flex; /* Necesario para el footer */
+    flex-direction: column;
+}
+
+h2 { font-size: 1.8rem; margin-bottom: var(--spacing-md); }
+h3 { font-size: 1.5rem; margin-bottom: var(--spacing-md); }
+
+.header {
+    background-color: var(--color-primary);
+    color: var(--color-card-bg);
+    padding: var(--spacing-lg) 0;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+}
+
+.header h1 { color: var(--color-card-bg); margin-bottom: var(--spacing-sm); }
+.header p { opacity: 0.9; }
+
+/* Estilos para el enlace del footer */
+.footer a {
+    color: inherit;            /* Hereda el color del texto del padre */
+    text-decoration: none;     /* Quita el subrayado */
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+/* Evita que cambie de color al hacer clic o después de visitarlo */
+.footer a:visited, 
+.footer a:active, 
+.footer a:focus {
+    color: inherit; 
+    text-decoration: none;
+}
+
+/* Un ligero cambio de opacidad al pasar el ratón para que se note que es un link */
+.footer a:hover {
+    opacity: 0.8;
+    text-decoration: underline; /* El subrayado solo aparece al pasar el ratón */
+}

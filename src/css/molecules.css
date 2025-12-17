@@ -1,0 +1,60 @@
+/* Tarjeta de Hecho (Molécula) */
+.card {
+    background-color: var(--color-card-bg);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-md);
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Estilo de error cuando la API falla */
+#fact-card.error {
+    background-color: #ffe0e0;
+    border: 2px solid var(--color-error);
+    color: var(--color-error);
+}
+
+#fact-text {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* Lista de Favoritos (Molécula) */
+.list-favorites {
+    list-style: none;
+    padding: 0;
+}
+
+.favorite-item {
+    background-color: var(--color-card-bg);
+    margin-bottom: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.favorite-item span {
+    flex-grow: 1;
+    margin-right: var(--spacing-md);
+    color: var(--color-text-light);
+}
+
+/* Botón de Eliminar 'X' */
+.delete-favorite-btn {
+    background-color: var(--color-error);
+    color: white;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    line-height: 1;
+    border-radius: 4px;
+    cursor: pointer;
+}
